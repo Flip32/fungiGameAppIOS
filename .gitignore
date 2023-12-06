@@ -1,0 +1,51 @@
+# Xcode
+*.xcuserstate
+xcuserdata/
+
+# Carthage
+/Carthage/
+
+# CocoaPods
+/Pods/
+*.lock
+Manifest.lock
+
+# Swift Package Manager
+/.build/
+/DerivedData/
+
+# Playgrounds
+/*.playground
+
+# AppCode
+.idea/
+
+# fastlane
+/fastlane/report.xml
+/fastlane/Preview.html
+/fastlane/screenshots/
+/fastlane/test_output/
+
+# TestFlight
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# Cocoapods
+/Pods
+.DS_Store
+/*.xcworkspace
+/*.xcuserdatad
+/*.xcproj
+
+# Swift Package Manager
+/.build/
+/DerivedData/
+.build/
+
+# Xcode
+.DS_Store
+/xcuserdata/
+/*.xcworkspace
+/*.xcuserdatad
+/*.xcproj
