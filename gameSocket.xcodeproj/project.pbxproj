@@ -11,6 +11,10 @@
 		83E7C6712ADDE504005A71EC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83E7C6702ADDE504005A71EC /* ContentView.swift */; };
 		83E7C6732ADDE506005A71EC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83E7C6722ADDE506005A71EC /* Assets.xcassets */; };
 		83E7C6762ADDE506005A71EC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 83E7C6752ADDE506005A71EC /* Preview Assets.xcassets */; };
+		83FB2B8D2B28F2CA004FB250 /* mesaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FB2B8C2B28F2CA004FB250 /* mesaView.swift */; };
+		83FB2B8F2B29034F004FB250 /* mesaViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FB2B8E2B29034F004FB250 /* mesaViewModel.swift */; };
+		83FB2B912B29036F004FB250 /* InfoRulesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FB2B902B29036F004FB250 /* InfoRulesViewModel.swift */; };
+		83FB2B932B290A73004FB250 /* inforulesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 83FB2B922B290A73004FB250 /* inforulesView.swift */; };
 		EAD243C10FAEBB86736C7936 /* libPods-gameSocket.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 050B198F2DA36F3490154E27 /* libPods-gameSocket.a */; };
 /* End PBXBuildFile section */
 
@@ -21,6 +25,10 @@
 		83E7C6702ADDE504005A71EC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		83E7C6722ADDE506005A71EC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		83E7C6752ADDE506005A71EC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		83FB2B8C2B28F2CA004FB250 /* mesaView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mesaView.swift; sourceTree = "<group>"; };
+		83FB2B8E2B29034F004FB250 /* mesaViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mesaViewModel.swift; sourceTree = "<group>"; };
+		83FB2B902B29036F004FB250 /* InfoRulesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoRulesViewModel.swift; sourceTree = "<group>"; };
+		83FB2B922B290A73004FB250 /* inforulesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = inforulesView.swift; sourceTree = "<group>"; };
 		F242A5AA0BAA150B6DA2F841 /* Pods-gameSocket.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gameSocket.release.xcconfig"; path = "Target Support Files/Pods-gameSocket/Pods-gameSocket.release.xcconfig"; sourceTree = "<group>"; };
 		F8B54E95F8FBF68CDB8907B0 /* Pods-gameSocket.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-gameSocket.debug.xcconfig"; path = "Target Support Files/Pods-gameSocket/Pods-gameSocket.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,6 +78,10 @@
 				83E7C6702ADDE504005A71EC /* ContentView.swift */,
 				83E7C6722ADDE506005A71EC /* Assets.xcassets */,
 				83E7C6742ADDE506005A71EC /* Preview Content */,
+				83FB2B8C2B28F2CA004FB250 /* mesaView.swift */,
+				83FB2B8E2B29034F004FB250 /* mesaViewModel.swift */,
+				83FB2B902B29036F004FB250 /* InfoRulesViewModel.swift */,
+				83FB2B922B290A73004FB250 /* inforulesView.swift */,
 			);
 			path = gameSocket;
 			sourceTree = "<group>";
@@ -88,7 +100,6 @@
 				F8B54E95F8FBF68CDB8907B0 /* Pods-gameSocket.debug.xcconfig */,
 				F242A5AA0BAA150B6DA2F841 /* Pods-gameSocket.release.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -188,7 +199,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				83FB2B932B290A73004FB250 /* inforulesView.swift in Sources */,
+				83FB2B8F2B29034F004FB250 /* mesaViewModel.swift in Sources */,
 				83E7C6712ADDE504005A71EC /* ContentView.swift in Sources */,
+				83FB2B912B29036F004FB250 /* InfoRulesViewModel.swift in Sources */,
+				83FB2B8D2B28F2CA004FB250 /* mesaView.swift in Sources */,
 				83E7C66F2ADDE504005A71EC /* gameSocketApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-let SERVIDOR_URL = "https://015e-2804-d59-a632-ad00-71ff-d3f1-899d-eb42.ngrok-free.app"
+let SERVIDOR_URL = "https://2dec-2804-d59-a632-ad00-8008-8f30-7a53-ef53.ngrok-free.app/"
 
 @main
 struct gameSocketApp: App {

@@ -3,13 +3,16 @@ import SocketIO
 
 
 struct ContentView: View {
+    @StateObject private var mesaViewModel = MesaViewModel()
+    @StateObject private var infoRulesViewModel = InfoRulesViewModel()
     @State private var message = ""
     @State private var messages: [ChatMessage] = []
-    @State private var mesa: Mesa?
     @State private var showMesaView = false
+//    @State private var infoRules = "nota do inicio"
     
     let socket: SocketManager
     let socketIOClient: SocketIOClient
+    
     
     init() {
         // Inicialize o socket e o socketIOClient dentro do inicializador
@@ -39,7 +42,7 @@ struct ContentView: View {
             .onAppear(perform: connectToServer)
             
             if showMesaView {
-                mesaView
+                MesaView(contentView: self, mesaViewModel: mesaViewModel, infoRulesViewModel: infoRulesViewModel)
                     .background(Color.white)
                     .cornerRadius(10)
                     .padding(20)
@@ -47,46 +50,7 @@ struct ContentView: View {
         }
     }
     
-    var mesaView: some View {
-        VStack {
-            HStack {
-                Button(action: getFromFlorestDeck) {
-                    Text("Deck Floresta")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.green)
-                        .cornerRadius(10)
-                }
-                Button(action: getFromMoonDeck) {
-                    Text("Deck da Lua")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.purple)
-                        .cornerRadius(10)
-                }
-                Button(action: getFromStickDeck) {
-                    Text("Deck de Gravetos")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.orange)
-                        .cornerRadius(10)
-                }
-            }
-            VStack {
-                Text("Floresta")
-                ScrollView(.horizontal) {
-                        HStack {
-                            ForEach(mesa?.florest ?? [], id: \.id) { florestCard in
-                                Text(florestCard.name)
-                                    .padding()
-                            }
-                        }
-                    }
-                .padding()
-                .background(Color.brown)
-            }
-        }
-    }
+   
     
     func sendMessage() {
         messages.append(ChatMessage(text: message, sender: "Player 1"))
@@ -119,7 +83,7 @@ struct ContentView: View {
                 if let jsonData = try? JSONSerialization.data(withJSONObject: sanitizedMesaData),
                    let mesaL = try? JSONDecoder().decode(Mesa.self, from: jsonData) {
                     DispatchQueue.main.async {
-                        mesa = mesaL
+                        mesaViewModel.mesa = mesaL
                     }
                 } else {
                     // Trate o caso em que a decodificação falhou
@@ -135,10 +99,11 @@ struct ContentView: View {
     }
     
     func printMesa() {
-        print(mesa)
-        if (mesa != nil) {
+        print(mesaViewModel.mesa)
+        if (mesaViewModel.mesa != nil) {
             print("===== Tem mesa porra ====")
-            print("mesa.florest => ", mesa?.florest)
+            print("mesa.florest => ", mesaViewModel.mesa?.florest)
+            fetchRules()
             showMesaView.toggle()
         }
     }
@@ -154,6 +119,30 @@ struct ContentView: View {
         // TODO: Pegar uma carta e colocar na mao
         // TODO: Atualizar mesa
     }
+    
+    func fetchRules() {
+        print("chegou no fetch rules")
+        print("\(SERVIDOR_URL)/get-rules")
+        guard let url = URL(string: "\(SERVIDOR_URL)get-rules") else {
+            print("URL inválida")
+            return
+        }
+
+        URLSession.shared.dataTask(with: url) { data, _, error in
+            if let data = data {
+                if let rules = String(data: data, encoding: .utf8) {
+                    DispatchQueue.main.async {
+                        print("rules")
+                        print(rules)
+                        infoRulesViewModel.infoRules = rules
+                    }
+                }
+            } else if let error = error {
+                print("Erro ao obter as regras:", error.localizedDescription)
+            }
+        }.resume()
+    }
+
 }
 
 struct ChatMessage: Identifiable {
