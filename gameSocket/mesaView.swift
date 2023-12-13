@@ -24,13 +24,6 @@ struct MesaView: View {
                     .clipShape(Circle())
             }
             HStack {
-                Button(action: contentView.getFromFlorestDeck) {
-                    Text("Deck Floresta")
-                        .foregroundColor(.white)
-                        .padding()
-                        .background(Color.green)
-                        .cornerRadius(10)
-                }
                 Button(action: contentView.getFromMoonDeck) {
                     Text("Deck da Lua")
                         .foregroundColor(.white)
@@ -51,8 +44,12 @@ struct MesaView: View {
                 ScrollView(.horizontal) {
                     HStack {
                         ForEach(mesaViewModel.mesa?.florest ?? [], id: \.id) { florestCard in
-                            Text(florestCard.name)
-                                .padding()
+                            Button(action: {
+                                contentView.getFromFlorest(cardId: String(florestCard.id))
+                            }) {
+                                Text(florestCard.name)
+                                    .padding()
+                            }
                         }
                     }
                 }

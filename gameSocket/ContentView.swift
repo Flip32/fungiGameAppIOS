@@ -22,30 +22,38 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            VStack {
-//                List(messages) { chat in
-//                    Text(chat.sender == "Player 1" ? "Player 1: \(chat.text)" : "Player 2: \(chat.text)")
-//                }
-//                
-//                HStack {
-//                    TextField("Digite sua mensagem", text: $message)
-//                    Button(action: sendMessage) {
-//                        Text("Enviar")
-//                    }
-//                }
-                
-                Button(action: printMesa) {
-                    Text("Imprimir Mesa")
+            if(!showMesaView) {
+                VStack {
+    //                List(messages) { chat in
+    //                    Text(chat.sender == "Player 1" ? "Player 1: \(chat.text)" : "Player 2: \(chat.text)")
+    //                }
+    //
+    //                HStack {
+    //                    TextField("Digite sua mensagem", text: $message)
+    //                    Button(action: sendMessage) {
+    //                        Text("Enviar")
+    //                    }
+    //                }
+                    
+                    Button(action: printMesa) {
+                        Text("Imprimir Mesa")
+                    }
                 }
+                .padding()
+                .onAppear(perform: connectToServer)
             }
-            .padding()
-            .onAppear(perform: connectToServer)
             
             if showMesaView {
-                MesaView(contentView: self, mesaViewModel: mesaViewModel, infoRulesViewModel: infoRulesViewModel)
-                    .background(Color.white)
-                    .cornerRadius(10)
-                    .padding(20)
+                ZStack {
+                    MesaView(contentView: self, mesaViewModel: mesaViewModel, infoRulesViewModel: infoRulesViewModel)
+                        .background(Color.white)
+                        .cornerRadius(10)
+                        .padding(20)
+                    Button(action: resolveFirstHand) {
+                        Text("Iniciar jogo")
+                            .background(Color.pink)
+                    }
+                }
             }
         }
     }
@@ -58,6 +66,11 @@ struct ContentView: View {
         message = ""
     }
     
+    func resolveFirstHand() {
+        socketIOClient.emit("RESOLVE_FIRST_HAND")
+    }
+    
+    
     func connectToServer() {
         socketIOClient.on("chat message") { data, _ in
             if let messageData = data[0] as? [String: Any],
@@ -69,8 +82,53 @@ struct ContentView: View {
             }
         }
         
-        socketIOClient.on("initial game") { data, _ in
+        socketIOClient.on("INITIAL_GAME") { data, _ in
             if let mesaData = data[0] as? [String: Any] {
+                print("Dados recebidos:", mesaData)
+                
+                // Substitua as ocorrências de "<null>" por nil
+                let sanitizedMesaData = mesaData.mapValues { value in
+                    if let strValue = value as? String, strValue == "<null>" {
+                        return nil as Any?
+                    } else {
+                        return value
+                    }
+                }
+                
+                do {
+                    let jsonData = try JSONSerialization.data(withJSONObject: sanitizedMesaData)
+                    print("JSON serializado:", String(data: jsonData, encoding: .utf8) ?? "")
+                    
+                    let mesaL = try JSONDecoder().decode(Mesa.self, from: jsonData)
+                    DispatchQueue.main.async {
+                        print("=========================================")
+                        print("=========================================")
+                        print("mesaL => \(mesaL)")
+                        print("=========================================")
+                        print("=========================================")
+                        mesaViewModel.mesa = mesaL
+                    }
+                } catch {
+                    // Trate o caso em que a decodificação falhou
+                    print("Erro: Falha na decodificação dos dados. Detalhes do erro:", error)
+                }
+            } else {
+                print("=========================================")
+                print("=========================================")
+                // Trate o caso em que os dados não são válidos (mesaData é nulo ou não é do tipo dicionário)
+                print("Erro: Os dados recebidos não são válidos.")
+            }
+        }
+
+        
+        socketIOClient.on("RESOLVE_TURN") { data, _ in
+            if let mesaData = data[0] as? [String: Any] {
+                print("Caiu no resolve turn")
+                print("Caiu no resolve turn")
+                print("Caiu no resolve turn")
+                print("Caiu no resolve turn")
+                print("Caiu no resolve turn")
+                print("Caiu no resolve turn")
                 // Substitua as ocorrências de "<null>" por nil
                 let sanitizedMesaData = mesaData.mapValues { value in
                     if let strValue = value as? String, strValue == "<null>" {
@@ -108,8 +166,10 @@ struct ContentView: View {
         }
     }
     
-    func getFromFlorestDeck() {
+    func getFromFlorest(cardId: String) {
+        socketIOClient.emit("GET_FLOREST_CARD", cardId)
         // TODO: Mostrar na tela quantas cartas faltam nesse deck
+        return
     }
     func getFromMoonDeck() {
         // TODO: Pegar uma carta e colocar na mao
@@ -123,7 +183,7 @@ struct ContentView: View {
     func fetchRules() {
         print("chegou no fetch rules")
         print("\(SERVIDOR_URL)/get-rules")
-        guard let url = URL(string: "\(SERVIDOR_URL)get-rules") else {
+        guard let url = URL(string: "\(SERVIDOR_URL)/get-rules") else {
             print("URL inválida")
             return
         }
@@ -153,11 +213,11 @@ struct ChatMessage: Identifiable {
 
 struct Mesa: Codable {
     let player: Player
-    let deckFlorest: [Card]
     let deckNight: [Card]
     let corruption: [Card]
     let trash: [Card]
     let florest: [Card]
+    let currentPlayerId: String
 }
 
 struct Player: Codable {
@@ -168,6 +228,7 @@ struct Player: Codable {
     let cookingSpots: [Card]?
     let totalPoints: Int
     let id: String
+    let cardsDiscarted: [Card]?
 }
 
 struct Card: Codable, Identifiable {
